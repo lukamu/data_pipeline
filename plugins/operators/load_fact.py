@@ -43,5 +43,5 @@ class LoadFactOperator(BaseOperator):
             self.hook.run("DELETE FROM {}".format(self.target_table))
 
         self.log.info('Inserting data from staging table.')
-        self.hook.run(f'INSERT INTO {self.target_table} {self.insert_query}'')
+        self.hook.run(f'INSERT INTO {self.target_table} {self.insert_query}')
         self.log.info("LoadFactOperator insert data successfully completed.")
