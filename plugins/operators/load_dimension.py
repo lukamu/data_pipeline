@@ -42,5 +42,5 @@ class LoadDimensionOperator(BaseOperator):
             self.hook.run("DELETE FROM {}".format(self.target_table))
 
         self.log.info('Inserting data from staging table.')
-        self.hook.run(f'INSERT INTO {self.target_table} {self.insert_query}'')
+        self.hook.run(f'INSERT INTO {self.target_table} {self.insert_query}')
         self.log.info("LoadDimensionOperator insert data successfully completed.")
