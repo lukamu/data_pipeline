@@ -11,14 +11,13 @@ class LoadDimensionOperator(BaseOperator):
 
     @apply_defaults
     def __init__(self, conn_id, drop_table,
-                 target_table, create_query, insert_query,
+                 target_table, insert_query,
                  append, *args, **kwargs):
 
         super(LoadDimensionOperator, self).__init__(*args, **kwargs)
         self.conn_id = conn_id
         self.drop_table = drop_table
         self.target_table = target_table
-        self.create_query = create_query
         self.insert_query = insert_query
         self.append = append
 
@@ -33,10 +32,6 @@ class LoadDimensionOperator(BaseOperator):
                 "Table {} dropped successfully.".format(
                     self.target_table))
 
-        self.log.info(
-            'Creating {} table.'.format(
-                self.target_table))
-        self.hook.run(self.create_query)
         if not self.append:
             self.log.info("Removing data from {}".format(self.target_table))
             self.hook.run("DELETE FROM {}".format(self.target_table))

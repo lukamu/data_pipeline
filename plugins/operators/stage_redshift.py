@@ -20,7 +20,7 @@ class StageToRedshiftOperator(BaseOperator):
 
     @apply_defaults
     def __init__(self, table, drop_table,
-                 aws_connection_id, redshift_connection_id, create_query,
+                 aws_connection_id, redshift_connection_id,
                  s3_bucket, s3_key, copy_options,
                  *args, **kwargs):
 
@@ -29,7 +29,6 @@ class StageToRedshiftOperator(BaseOperator):
         self.drop_table = drop_table
         self.aws_connection_id = aws_connection_id
         self.redshift_connection_id = redshift_connection_id
-        self.create_query = create_query
         self.s3_bucket = s3_bucket
         self.s3_key = s3_key
         self.copy_options = copy_options
@@ -57,11 +56,7 @@ class StageToRedshiftOperator(BaseOperator):
             self.log.info(
                 "Table {} dropped successfully.".format(
                     self.table))
-        self.log.info(
-            'Creating {} table.'.format(self.table))
-        self.hook.run(self.create_query)
-        self.log.info("Removing data from {}".format(self.table))
-        self.hook.run("DELETE FROM {}".format(self.table))
+        
         self.log.info('Copying data running the copy_sql_query.')
         self.hook.run(formatted_query)
         self.log.info("StageToRedshiftOperator data copy successfully completed.")
